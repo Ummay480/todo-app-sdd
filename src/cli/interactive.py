@@ -5,7 +5,7 @@ from typing import NoReturn
 from src.lib.storage import TaskStorage
 from src.services.task_service import TaskService
 from src.models.task import TaskPriority
-from src.cli.menu import select_from_list, prompt_text, prompt_list
+from src.cli.menu_simple import prompt_text, prompt_list
 
 
 def print_header(title: str) -> None:

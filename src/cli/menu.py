@@ -1,9 +1,14 @@
 """Simple arrow-key menu navigation using ANSI escape codes"""
 
 import sys
-import tty
-import termios
 from typing import List
+
+# Platform-specific imports
+if sys.platform == 'win32':
+    import msvcrt
+else:
+    import tty
+    import termios
 
 
 def get_key() -> str:
@@ -12,31 +17,56 @@ def get_key() -> str:
     Returns:
         String representing the key pressed
     """
-    fd = sys.stdin.fileno()
-    old_settings = termios.tcgetattr(fd)
-    try:
-        tty.setraw(sys.stdin.fileno())
-        ch = sys.stdin.read(1)
+    if sys.platform == 'win32':
+        # Windows implementation
+        if msvcrt.kbhit():
+            ch = msvcrt.getch()
 
-        # Handle escape sequences (arrow keys)
-        if ch == '\x1b':
-            ch = sys.stdin.read(2)
-            if ch == '[A':
-                return 'up'
-            elif ch == '[B':
-                return 'down'
-            elif ch == '[C':
-                return 'right'
-            elif ch == '[D':
-                return 'left'
-        elif ch == '\r' or ch == '\n':
-            return 'enter'
-        elif ch == '\x03':  # Ctrl+C
-            return 'ctrl_c'
+            # Handle special keys (arrow keys start with 0xe0 or 0x00)
+            if ch in (b'\xe0', b'\x00'):
+                ch2 = msvcrt.getch()
+                if ch2 == b'H':  # Up arrow
+                    return 'up'
+                elif ch2 == b'P':  # Down arrow
+                    return 'down'
+                elif ch2 == b'M':  # Right arrow
+                    return 'right'
+                elif ch2 == b'K':  # Left arrow
+                    return 'left'
+            elif ch == b'\r':  # Enter
+                return 'enter'
+            elif ch == b'\x03':  # Ctrl+C
+                return 'ctrl_c'
 
-        return ch
-    finally:
-        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+            return ch.decode('utf-8', errors='ignore')
+        return ''
+    else:
+        # Unix implementation
+        fd = sys.stdin.fileno()
+        old_settings = termios.tcgetattr(fd)
+        try:
+            tty.setraw(sys.stdin.fileno())
+            ch = sys.stdin.read(1)
+
+            # Handle escape sequences (arrow keys)
+            if ch == '\x1b':
+                ch = sys.stdin.read(2)
+                if ch == '[A':
+                    return 'up'
+                elif ch == '[B':
+                    return 'down'
+                elif ch == '[C':
+                    return 'right'
+                elif ch == '[D':
+                    return 'left'
+            elif ch == '\r' or ch == '\n':
+                return 'enter'
+            elif ch == '\x03':  # Ctrl+C
+                return 'ctrl_c'
+
+            return ch
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 
 
 def select_from_list(message: str, choices: List[str], default: int = 0) -> str:
