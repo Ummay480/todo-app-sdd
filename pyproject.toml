@@ -3,7 +3,7 @@ name = "todo-app"
 version = "0.1.0"
 description = "A CLI Todo Application built with AI-Driven Development"
 requires-python = ">=3.11"
-dependencies = ["inquirer>=3.1.0"]
+dependencies = []
 
 [project.optional-dependencies]
 dev = [
