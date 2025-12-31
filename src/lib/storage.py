@@ -57,3 +57,50 @@ class TaskStorage:
             True if a task with this title exists, False otherwise
         """
         return any(task["title"] == title for task in self._tasks)
+
+    def get_task_by_id(self, task_id: int) -> Task | None:
+        """Retrieve a task by its ID.
+
+        Args:
+            task_id: The ID of the task to retrieve
+
+        Returns:
+            Task if found, None otherwise
+        """
+        for task in self._tasks:
+            if task["id"] == task_id:
+                return task
+        return None
+
+    def update_task(self, task_id: int, **updates) -> bool:
+        """Update a task's fields.
+
+        Args:
+            task_id: The ID of the task to update
+            **updates: Field names and new values
+
+        Returns:
+            True if task was found and updated, False otherwise
+        """
+        for task in self._tasks:
+            if task["id"] == task_id:
+                for key, value in updates.items():
+                    if key in task:
+                        task[key] = value  # type: ignore
+                return True
+        return False
+
+    def delete_task(self, task_id: int) -> bool:
+        """Delete a task by its ID.
+
+        Args:
+            task_id: The ID of the task to delete
+
+        Returns:
+            True if task was found and deleted, False otherwise
+        """
+        for i, task in enumerate(self._tasks):
+            if task["id"] == task_id:
+                self._tasks.pop(i)
+                return True
+        return False
