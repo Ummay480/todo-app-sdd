@@ -7,6 +7,38 @@ from src.lib.storage import TaskStorage
 from src.services.task_service import TaskService
 
 
+def handle_list(args: argparse.Namespace, storage: TaskStorage) -> int:
+    """Handle the 'list' command.
+
+    Args:
+        args: Parsed command-line arguments
+        storage: TaskStorage instance
+
+    Returns:
+        Exit code (0 for success)
+    """
+    tasks = storage.get_all_tasks()
+
+    if not tasks:
+        print("No tasks found.")
+        print('Suggestion: Add a task with: todo add "Your task title"')
+        return 0
+
+    # Display header
+    print("\nTODO List")
+    print("=" * 50)
+    print(f"Total: {len(tasks)} task{'s' if len(tasks) != 1 else ''}\n")
+
+    # Display each task
+    for task in tasks:
+        status_icon = "○" if task["status"] == "pending" else "✓"
+        print(f"  {status_icon} [{task['id']}] {task['title']}")
+        print(f"      Status: {task['status']}")
+        print()
+
+    return 0
+
+
 def handle_add(args: argparse.Namespace, service: TaskService) -> int:
     """Handle the 'add' command.
 
@@ -73,6 +105,9 @@ def main() -> NoReturn:
     add_parser = subparsers.add_parser("add", help="Add a new task")
     add_parser.add_argument("title", type=str, help="Title of the task to add")
 
+    # 'list' command
+    list_parser = subparsers.add_parser("list", help="List all tasks")
+
     # Parse arguments
     args = parser.parse_args()
 
@@ -88,6 +123,9 @@ def main() -> NoReturn:
     # Dispatch to command handler
     if args.command == "add":
         exit_code = handle_add(args, service)
+        sys.exit(exit_code)
+    elif args.command == "list":
+        exit_code = handle_list(args, storage)
         sys.exit(exit_code)
     else:
         parser.print_help()
