@@ -1,24 +1,24 @@
 <!--
-Sync Impact Report - Constitution v1.0.0
+Sync Impact Report - Constitution v2.1.0
 ========================================
-Version: 1.0.0 → 1.1.0 (MINOR: Allow file-based persistence)
-Date: 2025-12-31
+Version: 2.0.0 → 2.1.0 (MINOR: Frontend-First implementation priority)
+Date: 2026-01-01
 
 Changes:
-- Updated Constitution to allow tasks.json for persistence to align with hackathon requirements
-- Moved from strictly in-memory to persistent file-based storage
+- Refined Phase-II scope to prioritize Frontend development and specs
+- Explicitly stated that UI specs and Frontend architecture must lead implementation
+- Maintained Full-Stack end-goal while focusing current cycle on Frontend
 
 Templates Status:
-- ✅ spec-template.md: Aligned - mandatory user scenarios, acceptance criteria, edge cases match Section 6
-- ✅ plan-template.md: Aligned - Constitution Check section ready for validation gates
-- ✅ tasks-template.md: Aligned - user story organization supports deterministic execution
-- ⚠ Command files: Located in .claude/commands/*.md (non-standard location; .specify/templates/commands/*.md not found)
+- ✅ plan-template.md: Validated
+- ✅ spec-template.md: Validated
+- ✅ tasks-template.md: Validated
 
 Follow-up Actions:
-- None - all templates validated and aligned with constitution principles
+- Initialize Phase II specs in phase-II/specs/ with UI-first focus
 -->
 
-# Todo CLI Application Constitution
+# Todo Full-Stack Web Application Constitution (Phase II)
 
 This Constitution defines the non-negotiable laws, constraints, and quality standards of the project.
 
@@ -30,19 +30,19 @@ All agents, sub-agents, skills, specifications, tasks, and implementations MUST 
 
 ## 1. Project Purpose
 
-The goal of Phase-1 is to build a robust, production-grade CLI Todo Application using AI-Driven Development with strict governance.
+The goal of Phase-II is to transform the Phase-I CLI app into a modern, production-grade, multi-user Full-Stack Web Application with persistent storage.
 
-This phase is intentionally minimal in scope but maximal in quality.
+**Priority Strategy**: Implementation will prioritize a **Frontend-First** approach, where UI/UX specifications and Frontend architecture are defined and built to drive backend requirements.
 
 ### Core Objectives
 
-- **Spec-Driven Development (SDD)**: No code without specification
-- **Agent Orchestration**: Not prompt hacking - structured agent workflows
-- **Reusable Intelligence**: Skills as durable, stateless units
-- **Automatic QA Enforcement**: Quality gates block progress when violated
-- **Deterministic Behavior**: Same input → same output, no randomness
-- **Clear Separation of Concerns**: Agent hierarchy enforces responsibility boundaries
-- **Zero Vibe-Coding**: Every decision traceable to specification or architectural record
+- **Spec-Driven Development (SDD)**: No code without specification.
+- **Agent Orchestration**: Structured agent workflows using specialized sub-agents.
+- **Reusable Intelligence**: Skills as durable, stateless units.
+- **Automatic QA Enforcement**: Quality gates block progress when violated.
+- **Deterministic Behavior**: Same input → same output; predictable API states.
+- **Multi-User Isolation**: Every user only accesses their own data.
+- **Zero Vibe-Coding**: Every decision traceable to specification or architectural record.
 
 ---
 
@@ -53,12 +53,10 @@ This phase is intentionally minimal in scope but maximal in quality.
 **Principle**: Specifications override assumptions, preferences, and shortcuts.
 
 **Rules**:
-- No code may exist without an approved specification
-- Ambiguity MUST be resolved before planning begins
-- Incomplete specifications are invalid and MUST be rejected
-- Specifications are human-readable and machine-enforceable
-
-**Rationale**: Prevents scope creep, reduces rework, ensures stakeholder alignment before resource investment.
+- No code may exist without an approved specification.
+- Ambiguity MUST be resolved before planning begins.
+- Incomplete specifications are invalid and MUST be rejected.
+- Specifications are human-readable and machine-enforceable.
 
 ---
 
@@ -67,12 +65,10 @@ This phase is intentionally minimal in scope but maximal in quality.
 **Principle**: All meaningful work MUST be executed by agents or sub-agents. Skills are reusable intelligence units.
 
 **Rules**:
-- Ad-hoc prompting is FORBIDDEN
-- Each agent has a defined scope and authority level
-- Skills are stateless, deterministic, and invoked explicitly
-- One-off instructions violate the architecture
-
-**Rationale**: Ensures repeatability, traceability, and composability. Prevents workflow fragmentation and undocumented decision-making.
+- Ad-hoc prompting is FORBIDDEN.
+- Each agent has a defined scope and authority level.
+- Skills are stateless, deterministic, and invoked explicitly.
+- One-off instructions violate the architecture.
 
 ---
 
@@ -81,53 +77,43 @@ This phase is intentionally minimal in scope but maximal in quality.
 **Principle**: Fast but incorrect = FAILURE. Partial correctness = FAILURE.
 
 **Rules**:
-- Quality is enforced BEFORE progress is allowed
-- Failing a quality gate MUST halt execution
-- No "move fast and break things" exemptions
-- Tests, linters, contract checks are non-negotiable
-
-**Rationale**: Technical debt compounds exponentially. Early quality enforcement prevents cascading failures and reduces long-term cost.
+- Quality is enforced BEFORE progress is allowed.
+- Failing a quality gate MUST halt execution.
+- No "move fast and break things" exemptions.
+- Tests (Frontend/Backend), linters, and contract checks are non-negotiable.
 
 ---
 
-### 2.4 Deterministic Behavior
+### 2.4 Security by Design
 
-**Principle**: Same input → same output. No randomness. No hidden or implicit state.
+**Principle**: Authentication and Authorization are mandatory for all user interactions.
 
 **Rules**:
-- All CLI commands MUST produce predictable, documented output
-- No stochastic algorithms without explicit seed control
-- Global mutable state is FORBIDDEN
-- Error messages MUST be consistent and machine-parseable
-
-**Rationale**: Enables automated testing, debugging, and user trust. Critical for hackathon demo reliability.
+- All API endpoints (except public Auth sign-in/up) MUST require a valid JWT.
+- Every database query MUST filter by the authenticated user's ID.
+- Tokens MUST be handled securely (Authorization: Bearer header).
+- No production secrets (keys, db urls) in the codebase.
 
 ---
 
-## 3. Phase-1 Scope Boundaries (Hard Limits)
+## 3. Phase II Technical Stack & Boundaries
 
-### Allowed
+### Allowed (Core Stack)
 
-- CLI-based interaction ONLY
-- In-memory data with file-based persistence via tasks.json
-- Single-user execution
-- Synchronous commands
-- Deterministic operations
+- **Frontend**: Next.js 16+ (App Router, Server Components).
+- **Backend**: Python FastAPI with SQLModel ORM.
+- **Auth**: Better Auth (JWT plugin enabled).
+- **Database**: Neon Serverless PostgreSQL.
+- **Styling**: Tailwind CSS.
+- **Monorepo**: Shared specs and separate `/frontend`, `/backend` directories.
 
 ### Forbidden (Automatic Failure)
 
-The following are STRICTLY PROHIBITED in Phase-1 and will result in IMMEDIATE REJECTION:
-
-- UI / Frontend (web, mobile, desktop GUI)
-- Databases (SQL, NoSQL, etc. - tasks.json is allowed)
-- External APIs or network calls
-- Background services or daemons
-- Async workers or multi-threading
-- Plugins or extension systems
-- Uncontrolled global mutable state
-- Code duplication (DRY principle violations)
-
-**Rationale**: Phase-1 is a proof-of-concept for SDD governance. Scope creep is the primary risk. Hard boundaries force focus on architecture quality over feature breadth.
+- Manual coding outside of agentic workflows.
+- No-auth endpoints (except signup/signin).
+- Shared sessions (cross-user data leakage).
+- Hardcoded sensitive credentials.
+- Bypassing the SDD workflow (e.g., skip spec for "hotfix").
 
 ---
 
@@ -138,189 +124,78 @@ The following are STRICTLY PROHIBITED in Phase-1 and will result in IMMEDIATE RE
 **Agent**: `todo-spec-manager`
 
 **Responsibilities**:
-- Owns the Constitution and enforces compliance
-- Approves or rejects specifications, plans, tasks, and implementations
-- Owns all architectural decisions
-- Acts as Brain + Controller + Judge
-
-**Authority**: FINAL. No appeal mechanism. Main agent decisions are binding.
+- Owns the Constitution and enforces compliance.
+- Approves or rejects specifications, plans, tasks, and implementations.
+- Owns all architectural decisions.
 
 ---
 
 ### 4.2 Sub-Agents
 
-**Example**: `todo-domain-agent`
-
-**Rules**:
-- Advisory role ONLY - no approval authority
-- CANNOT write code
-- CANNOT create tasks
-- CANNOT bypass main agent
-- Operate strictly under main-agent supervision
-
-**Rationale**: Prevents authority fragmentation. Sub-agents provide expertise; main agent retains decision rights.
-
----
-
-### 4.3 Skills (Reusable Intelligence)
-
-**Definition**: Stateless, deterministic, reusable units of work.
-
-**Rules**:
-- No decision-making authority
-- Executed ONLY when invoked
-- Must be idempotent where possible
-- MUST NOT depend on external state
-
-**Authority Flow**:
-```
-Constitution
-   ↓
-Main Agent (todo-spec-manager)
-   ↓
-Sub-Agents (todo-domain-agent, python-cli-expert, hackathon-review-agent)
-   ↓
-Skills (qa.validate-acceptance-criteria, qa.cli-integration-testing, etc.)
-   ↓
-Implementation
-```
-
-**Rationale**: Clear hierarchy prevents circular dependencies and authority conflicts. Skills enable reuse without coupling.
+**Specialized Agents**:
+- `todo-domain-agent`: Business rules and logic validation.
+- `python-cli-expert`: Best practices for FastAPI and Python patterns.
+- `hackathon-review-agent`: Checks against hackathon judge rubrics.
 
 ---
 
 ## 5. Quality Assurance (Mandatory)
 
-**QA is NOT optional.**
-
 ### Quality Gates
 
-- **FAIL**: Execution MUST stop immediately. No bypass mechanism.
-- **CONDITIONAL**: Must be resolved before proceeding. Requires main agent approval.
+- **FAIL**: Execution MUST stop immediately.
 - **PASS**: Proceed to next stage.
 
-**Any QA violation results in automatic rejection.**
-
-### Enforcement
-
-Quality gates are checked:
-- After specification creation
-- After planning
-- After task generation
-- Before and after implementation
-- During code review
-
-**Rationale**: Automated quality enforcement removes human bias and ensures consistent standards.
+Quality gates checked after:
+- Specification creation
+- Architecture planning
+- Task generation
+- Implementation (Tests must pass)
 
 ---
 
 ## 6. Specification Rules
 
 Every specification MUST include:
-
-1. **Acceptance Criteria**: Clear, testable conditions for completion
-2. **Edge Cases**: Boundary conditions, error scenarios, and invalid inputs
-3. **Error Conditions**: Expected error messages and status codes
-4. **Explicit CLI Commands**: Exact syntax and expected output
-5. **Predictable Behavior**: Deterministic outcomes documented
-6. **Human-Readable & Machine-Enforceable Format**: Structured YAML/Markdown
-
-**Incomplete specifications are invalid and MUST be rejected.**
-
-**Rationale**: Prevents ambiguity. Specifications serve as contracts between stakeholders, planners, and implementers.
+1. **Acceptance Criteria**: Clear, testable conditions (User Story format).
+2. **Edge Cases**: Auth failures, empty states, network latency, validation errors.
+3. **API Contracts**: Endpoint path, method, request/response schema.
+4. **Data Model**: SQLModel table definitions and relationships.
+5. **UI Components**: Layout description and interactive requirements.
 
 ---
 
 ## 7. Enforced Workflow Order (Strict)
 
-The following workflow MUST be followed in order. Skipping or reordering steps is STRICTLY FORBIDDEN:
-
-1. **Constitution**: Establish governance (this document)
-2. **Specification**: Define requirements and acceptance criteria
-3. **Planning**: Design architecture and implementation approach
-4. **Task Creation**: Break plan into discrete, testable units
-5. **Implementation**: Execute tasks with TDD discipline
-6. **QA Validation**: Run automated quality checks
-7. **Checklist Verification**: Manual review against constitution compliance
-
-**Rationale**: Each stage builds on the previous. Out-of-order execution causes rework and scope drift.
+1. **Constitution**: Establish Phase II governance.
+2. **Specification**: Define feature requirements (Organized by Feature/API/DB/UI).
+3. **Planning**: Architecture and implementation approach (including ADRs).
+4. **Task Creation**: Breakdown into testable, prioritized tasks.
+5. **Implementation**: Parallel execution of frontend/backend tasks.
+6. **QA Validation**: Automated tests and contract validation.
 
 ---
 
 ## 8. Error Handling Principles
 
-### Rules
-
-- Errors MUST be clear and user-friendly (no jargon or internal codes exposed)
-- Silent failures are FORBIDDEN (all errors MUST be logged and reported)
-- Stack traces MUST NOT be exposed to end users (development mode exception allowed)
-- CLI error messages MUST be deterministic and documented in specification
-
-### Error Message Format
-
-```
-ERROR: [User-friendly description]
-Suggestion: [Actionable next step]
-Code: [Internal error code for debugging]
-```
-
-**Rationale**: Errors are user touchpoints. Poor error UX destroys trust. Consistent error handling enables automated testing.
+- API errors MUST return standard HTTP status codes (401, 403, 404, 422, 500).
+- Frontend MUST handle loading and error states gracefully with user feedback.
+- No implementation details in user-facing error messages.
 
 ---
 
-## 9. Evaluation Criteria (Judge-Aligned)
-
-This project will be evaluated on:
-
-1. **Agent Architecture Clarity**: Is the agent hierarchy enforced? Are responsibilities clear?
-2. **Skill Reusability**: Are skills stateless, documented, and reused across workflows?
-3. **Specification Completeness**: Do specs include acceptance criteria, edge cases, and error conditions?
-4. **QA Enforcement Discipline**: Are quality gates consistently applied? Any bypasses?
-5. **Deterministic Behavior**: Can demos be repeated reliably? Are outputs predictable?
-6. **Simplicity with Correctness**: Is the solution minimal yet complete? No over-engineering?
-
-**Rationale**: These criteria align with hackathon judging rubrics (clarity, demo-ability, technical rigor).
-
----
-
-## 10. Enforcement Clause
-
-**Violation of any rule in this Constitution results in:**
-
-**IMMEDIATE REJECTION OF THE WORK**
-
-No negotiation. No exceptions.
-
----
-
-## Governance
+## 9. Governance
 
 ### Amendment Process
-
-1. Proposed changes MUST be documented in an ADR (Architecture Decision Record)
-2. Main agent (`todo-spec-manager`) MUST approve
-3. Amended constitution MUST increment version according to semantic versioning
-4. All dependent templates (spec, plan, tasks) MUST be updated for consistency
-5. Migration plan required for breaking changes
+- Proposed changes MUST be documented via ADR.
+- Version increment required (Semantic Versioning).
+- All dependent artifacts MUST be updated for consistency.
 
 ### Versioning Policy
-
-- **MAJOR**: Backward-incompatible governance changes (e.g., removing a principle)
-- **MINOR**: New principles or sections added
-- **PATCH**: Clarifications, typos, non-semantic refinements
-
-### Compliance Review
-
-- All specifications MUST reference constitution compliance
-- All plans MUST include "Constitution Check" section
-- All tasks MUST map to approved specifications
-- All implementations MUST pass QA gates
-
-### Runtime Guidance
-
-- Development guidance: See `CLAUDE.md` for agent-specific instructions
-- Governance log: See `.specify/memory/governance-log.md` for decision history
+- **MAJOR**: Platform/Stack shift or principle removal.
+- **MINOR**: New mandatory practices or feature sets.
+- **PATCH**: Typos and clarifications.
 
 ---
 
-**Version**: 1.1.0 | **Ratified**: 2025-12-28 | **Last Amended**: 2025-12-31
+**Version**: 2.1.0 | **Ratified**: 2026-01-01 | **Last Amended**: 2026-01-01
