@@ -1,83 +1,31 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-pip-wheel-metadata/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
-# Virtual environments
-.venv/
-venv/
-ENV/
-env/
-.env
-
-# PyTest
-.pytest_cache/
-.coverage
-htmlcov/
-.tox/
-.nox/
-coverage.xml
-*.cover
-.hypothesis/
-
-# MyPy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# IDEs
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-.DS_Store
-Thumbs.db
-
-# Logs
-*.log
-
-# Distribution / packaging
-*.whl
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# pyenv
-.python-version
-
-# Project specific
-nul
-
-# Todo app data files
-tasks.json
-tasks.json.bak
-
-# Node / Next.js
+# Node.js
 node_modules/
 .next/
 out/
 build/
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+dist/
+.npm
+.eslintcache
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.env
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Data
+tasks.json
+*.db
+
+# OS & IDE
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
