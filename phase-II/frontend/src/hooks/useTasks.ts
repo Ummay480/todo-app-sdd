@@ -18,7 +18,7 @@ export interface Task {
  * Custom hook for managing tasks using React Query
  * Reference: @specs/features/task-crud.md
  */
-export function useTasks(filters?: { status?: string; sort_by?: string }) {
+export function useTasks(filters?: { status?: string; sort_by?: string; priority?: string; search?: string }) {
   const queryClient = useQueryClient();
 
   // Fetch tasks

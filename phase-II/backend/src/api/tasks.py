@@ -47,6 +47,29 @@ async def update_task(
         raise HTTPException(status_code=404, detail="Task not found")
     return db_task
 
+@router.get("/{task_id}", response_model=Task)
+async def get_task(
+    task_id: uuid.UUID,
+    session: Session = Depends(get_session),
+    current_user: dict = Depends(get_current_user)
+):
+    task = TaskService.get_task_by_id(session, task_id, uuid.UUID(current_user["id"]))
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+    return task
+
+@router.patch("/{task_id}/complete", response_model=Task)
+async def toggle_task_completion(
+    task_id: uuid.UUID,
+    completed: bool,
+    session: Session = Depends(get_session),
+    current_user: dict = Depends(get_current_user)
+):
+    task = TaskService.update_task_completion(session, task_id, completed, uuid.UUID(current_user["id"]))
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+    return task
+
 @router.delete("/{task_id}", status_code=204)
 async def delete_task(
     task_id: uuid.UUID,

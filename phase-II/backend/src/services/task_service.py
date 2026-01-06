@@ -66,6 +66,31 @@ class TaskService:
         return db_task
 
     @staticmethod
+    def get_task_by_id(session: Session, task_id: uuid.UUID, user_id: uuid.UUID) -> Optional[Task]:
+        statement = select(Task).where(Task.id == task_id, Task.user_id == user_id)
+        return session.exec(statement).first()
+
+    @staticmethod
+    def update_task_completion(
+        session: Session,
+        task_id: uuid.UUID,
+        completed: bool,
+        user_id: uuid.UUID
+    ) -> Optional[Task]:
+        statement = select(Task).where(Task.id == task_id, Task.user_id == user_id)
+        db_task = session.exec(statement).first()
+        if not db_task:
+            return None
+
+        db_task.is_completed = completed
+        db_task.updated_at = datetime.now(timezone.utc)
+
+        session.add(db_task)
+        session.commit()
+        session.refresh(db_task)
+        return db_task
+
+    @staticmethod
     def delete_task(session: Session, task_id: uuid.UUID, user_id: uuid.UUID) -> bool:
         statement = select(Task).where(Task.id == task_id, Task.user_id == user_id)
         db_task = session.exec(statement).first()

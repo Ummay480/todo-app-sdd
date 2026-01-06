@@ -3,7 +3,7 @@ import time
 import os
 from typing import Dict, Any
 
-JWT_SECRET = os.getenv("JWT_SECRET", "CHANGE_THIS_TO_ENV_SECRET")  # Use environment variable
+JWT_SECRET = os.getenv("BETTER_AUTH_SECRET", os.getenv("JWT_SECRET", "CHANGE_THIS_TO_ENV_SECRET"))  # Use Better Auth secret if available
 JWT_ALGORITHM = "HS256"
 JWT_EXPIRES_IN = 60 * 60  # 1 hour
 

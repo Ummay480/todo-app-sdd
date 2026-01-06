@@ -1,0 +1,5 @@
+.env
+.railway.env
+todo_app.db
+__pycache__/
+*.pyc

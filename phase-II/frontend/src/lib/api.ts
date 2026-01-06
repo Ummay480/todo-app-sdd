@@ -77,13 +77,13 @@ export async function apiRequest<T>(
  */
 
 export const tasksApi = {
-  getTasks: (params?: { status?: string; sort_by?: string }) =>
+  getTasks: (params?: { status?: string; sort_by?: string; priority?: string; search?: string }) =>
     apiRequest<any[]>('/tasks', 'GET', { params }),
 
   getTask: (id: string) =>
     apiRequest<any>(`/tasks/${id}`, 'GET'),
 
-  createTask: (data: { title: string; description?: string; due_date?: string }) =>
+  createTask: (data: { title: string; description?: string; priority?: string }) =>
     apiRequest<any>('/tasks', 'POST', { body: data }),
 
   updateTask: (id: string, data: any) =>
@@ -93,5 +93,5 @@ export const tasksApi = {
     apiRequest<void>(`/tasks/${id}`, 'DELETE'),
 
   toggleComplete: (id: string, completed: boolean) =>
-    apiRequest<any>(`/tasks/${id}`, 'PATCH', { body: { completed } }),
+    apiRequest<any>(`/tasks/${id}/complete`, 'PATCH', { body: { completed } }),
 };
