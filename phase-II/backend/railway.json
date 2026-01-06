@@ -1,0 +1,7 @@
+{
+  "projectId": "",
+  "deployments": {
+    "autoDeploy": true,
+    "branch": "main"
+  }
+}

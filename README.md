@@ -14,3 +14,4 @@ Detailed feature and architectural specifications can be found in the `specs/` d
 
 ---
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
+# todo-app
