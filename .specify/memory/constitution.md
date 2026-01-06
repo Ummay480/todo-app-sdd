@@ -1,21 +1,22 @@
 <!--
-Sync Impact Report - Constitution v2.1.0
+Sync Impact Report - Constitution v2.2.0
 ========================================
-Version: 2.0.0 → 2.1.0 (MINOR: Frontend-First implementation priority)
-Date: 2026-01-01
+Version: 2.1.0 → 2.2.0 (MINOR: Neon DB & SQLModel enforcement)
+Date: 2026-01-02
 
 Changes:
-- Refined Phase-II scope to prioritize Frontend development and specs
-- Explicitly stated that UI specs and Frontend architecture must lead implementation
-- Maintained Full-Stack end-goal while focusing current cycle on Frontend
+- Explicitly mandated Neon Serverless PostgreSQL and SQLModel for Phase-II.
+- Strengthened User Story independence and Priority (P1/P2/P3) requirements in specifications.
+- Added strict multi-user data isolation rules for database queries.
 
 Templates Status:
-- ✅ plan-template.md: Validated
-- ✅ spec-template.md: Validated
-- ✅ tasks-template.md: Validated
+- ✅ plan-template.md: Validated alignment with technical stack boundaries.
+- ✅ spec-template.md: Validated alignment with prioritized user stories.
+- ✅ tasks-template.md: Validated alignment with story-based task organization.
 
 Follow-up Actions:
-- Initialize Phase II specs in phase-II/specs/ with UI-first focus
+- Populate @specs/database/schema.md with SQLModel entity definitions.
+- update @specs/architecture.md to reflect FastAPI-Neon data flow.
 -->
 
 # Todo Full-Stack Web Application Constitution (Phase II)
@@ -157,11 +158,12 @@ Quality gates checked after:
 ## 6. Specification Rules
 
 Every specification MUST include:
-1. **Acceptance Criteria**: Clear, testable conditions (User Story format).
-2. **Edge Cases**: Auth failures, empty states, network latency, validation errors.
-3. **API Contracts**: Endpoint path, method, request/response schema.
-4. **Data Model**: SQLModel table definitions and relationships.
-5. **UI Components**: Layout description and interactive requirements.
+1. **Prioritized User Stories**: Independent P1/P2/P3 user journeys.
+2. **Acceptance Criteria**: Clear, testable conditions (Given/When/Then).
+3. **Edge Cases**: Auth failures, empty states, validation errors.
+4. **API Contracts**: Endpoint path, method, request/response schema.
+5. **Data Model**: SQLModel table definitions and relationships.
+6. **UI Components**: Layout description and interactive requirements.
 
 ---
 
@@ -198,4 +200,4 @@ Every specification MUST include:
 
 ---
 
-**Version**: 2.1.0 | **Ratified**: 2026-01-01 | **Last Amended**: 2026-01-01
+**Version**: 2.2.0 | **Ratified**: 2026-01-01 | **Last Amended**: 2026-01-02

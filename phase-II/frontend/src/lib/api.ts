@@ -4,12 +4,15 @@
  * Reference: @specs/api/rest-endpoints.md
  */
 
+import { authClient } from "./auth-client";
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
-interface RequestOptions extends RequestInit {
+interface RequestOptions extends Omit<RequestInit, 'body'> {
   params?: Record<string, string | number | boolean>;
+  body?: any;
 }
 
 export async function apiRequest<T>(
@@ -27,18 +30,16 @@ export async function apiRequest<T>(
     });
   }
 
-  // Get token from better-auth (Better Auth handles session persistence in cookies/localstorage)
-  // The backend expects JWT from better-auth JWT plugin
+  // Get JWT from localStorage
+  const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
+
   const defaultHeaders: Record<string, string> = {
     'Content-Type': 'application/json',
   };
 
-  // better-auth-react handles the token automatically in the client,
-  // but if we need manual attachment for non-browser environments or specific headers:
-  // if (typeof window !== 'undefined') {
-  //   const token = localStorage.getItem('better-auth.session-token');
-  //   if (token) defaultHeaders['Authorization'] = `Bearer ${token}`;
-  // }
+  if (token) {
+    defaultHeaders['Authorization'] = `Bearer ${token}`;
+  }
 
   const response = await fetch(url.toString(), {
     method,
