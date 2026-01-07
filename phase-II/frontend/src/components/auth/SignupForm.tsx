@@ -47,7 +47,14 @@ export function SignupForm() {
   const onSubmit = async (values: SignupValues) => {
     setLoading(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'}/auth/signup`, {
+      // Use the centralized API client approach but ensure proper URL construction
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      // For production URLs, add /api prefix; for localhost, use as is (to maintain backward compatibility)
+      const apiUrl = baseUrl.includes('localhost') || baseUrl.includes('127.0.0.1')
+        ? baseUrl
+        : `${baseUrl}/api`;
+
+      const response = await fetch(`${apiUrl}/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

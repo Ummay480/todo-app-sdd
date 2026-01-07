@@ -6,7 +6,7 @@
 
 import { authClient } from "./auth-client";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
@@ -23,7 +23,11 @@ export async function apiRequest<T>(
   const { params, body, headers, ...rest } = options;
 
   // Construct URL with query parameters
-  const url = new URL(`${API_BASE_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`);
+  // Add /api prefix for production URLs, but not for localhost (for backward compatibility)
+  const baseUrl = API_BASE_URL.includes('localhost') || API_BASE_URL.includes('127.0.0.1')
+    ? API_BASE_URL
+    : `${API_BASE_URL}/api`;
+  const url = new URL(`${baseUrl}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`);
   if (params) {
     Object.entries(params).forEach(([key, value]) => {
       url.searchParams.append(key, String(value));
